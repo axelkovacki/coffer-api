@@ -1,12 +1,13 @@
 const md5 = require('md5');
-const User = require('../models/User');
+
+const UserModel = global.locator('modules/user/models/user')
 
 async function login(request, reply) {
 
   const { email, password } = request.body;
 
-  const user = await User.findOne({ email, password: md5(password) });
-  console.log(user)
+  const user = await UserModel.findOne({ email, password: md5(password) });
+  
   if(!user) {
     return reply.code(404).send({ message: 'No user'});
   }
@@ -17,7 +18,7 @@ async function login(request, reply) {
 async function create(request, reply) {  
   const { name, email, password } = request.body;
 
-  const userExists = await User.findOne({ email });
+  const userExists = await UserModel.findOne({ email });
 
   if(userExists) {
     return reply.code(409).send({ message: 'User already exists.' });
@@ -25,7 +26,7 @@ async function create(request, reply) {
 
   const apiKey = md5(`${name}-${email}-${password}`);
 
-  const newUser = await User.create({
+  const newUser = await UserModel.create({
     name,
     email,
     password: md5(password),

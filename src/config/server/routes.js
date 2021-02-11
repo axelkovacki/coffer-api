@@ -1,8 +1,7 @@
-const AuthMiddleware = require('../../middlewares/AuthMiddleware');
-
-const UserController = require('../../controllers/UserController');
-const ProjectController = require('../../controllers/ProjectController');
-const LogController = require('../../controllers/LogController');
+const AuthMiddleware = global.locator('middlewares/auth/auth');
+const UserController = global.locator('modules/user/controllers/user');
+const ProjectController = global.locator('modules/project/controllers/project');
+const LogController = global.locator('modules/log/controllers/log');
 
 module.exports = function (fastify, opts, next) {
   fastify.post('/user/login', async (request, reply) => UserController.login(request, reply));
@@ -13,6 +12,7 @@ module.exports = function (fastify, opts, next) {
     { preHandler: [AuthMiddleware] },
     async (request, reply) => ProjectController.create(request, reply)
   );
+
   fastify.get(
     '/project/list',
     { preHandler: [AuthMiddleware] },
@@ -24,6 +24,7 @@ module.exports = function (fastify, opts, next) {
     { preHandler: [AuthMiddleware] },
     async (request, reply) => LogController.create(request, reply)
   );
+
   fastify.get(
     '/log/list',
     { preHandler: [AuthMiddleware] },

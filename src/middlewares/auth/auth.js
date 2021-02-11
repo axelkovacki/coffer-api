@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const UserModel = global.locator('modules/user/models/user');
 
 async function verify(request, reply) {
   const { api_key } = request.headers;
@@ -7,7 +7,7 @@ async function verify(request, reply) {
     return reply.code(400).send({ message: 'Api key not reported'});
   }
 
-  const user = await User.findOne({ apiKey: api_key });
+  const user = await UserModel.findOne({ apiKey: api_key });
 
   if(!user) {
     return reply.code(404).send({ message: 'No user found'});

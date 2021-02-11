@@ -1,5 +1,5 @@
-const Log = require('../models/Log');
-const Project = require('../models/Project');
+const LogModel = global.locator('modules/log/models/log')
+const ProjectModel = global.locator('modules/project/models/project')
 
 async function create(request, reply) {
   try {
@@ -11,13 +11,13 @@ async function create(request, reply) {
       return reply.code('400').send({ message: 'Invalid Body' });
     }
 
-    const projectExists = await Project.findOne({ userId: _id, _id: project_id });
+    const projectExists = await ProjectModel.findOne({ userId: _id, _id: project_id });
 
     if (!projectExists) {
       return reply.code('404').send({ message: 'Project not found' });
     }
 
-    const data = await Log.create({
+    const data = await LogModel.create({
       projectId: project_id,
       payload
     });
@@ -37,7 +37,7 @@ async function list(request, reply) {
       return reply.code('400').send({ message: 'Invalid Param' });
     }
   
-    return reply.send({ data: await Log.find({ projectId: project_id }).sort('-createdAt') });
+    return reply.send({ data: await LogModel.find({ projectId: project_id }).sort('-createdAt') });
   } catch (err) {
     console.log(err);
   }

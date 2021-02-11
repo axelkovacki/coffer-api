@@ -1,4 +1,6 @@
-const { Schema, model } = require('mongoose');
+const DatabaseManager = global.locator('config/database/manager');
+
+const { Schema, model } = DatabaseManager;
 
 const LogSchema = new Schema({
   projectId: String,

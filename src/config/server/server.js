@@ -1,9 +1,11 @@
 const Fastify = require('fastify')({ logger: true });
 
+const ServerRoutes = global.locator('config/server/routes');
+
 async function start() {
   try {
     Fastify.register(require('fastify-cors'));
-    Fastify.register(require('./routes'));
+    Fastify.register(ServerRoutes);
     await Fastify.listen(3001);
     Fastify.log.info(`server listening on ${Fastify.server.address().port}`);
   } catch (err) {

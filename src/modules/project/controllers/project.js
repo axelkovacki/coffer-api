@@ -1,8 +1,8 @@
-const Project = require('../models/Project');
+const ProjectModel = global.locator('modules/project/models/project')
 
 async function list(request, reply) {
   const { _id } = request.auth;
-  const projects = await Project.find({ userId: _id });
+  const projects = await ProjectModel.find({ userId: _id });
   
   if(!projects) {
     return reply.send({ data: [] });
@@ -15,13 +15,13 @@ async function create(request, reply) {
   const { _id } = request.auth;
   const { name } = request.body;
 
-  const projectExists = await Project.findOne({ name });
+  const projectExists = await ProjectModel.findOne({ name });
 
   if(projectExists) {
     return reply.code(409).send({ message: 'Project with this name already exists.' });
   }
 
-  const newProject = await Project.create({
+  const newProject = await ProjectModel.create({
     userId: _id,
     name
   });

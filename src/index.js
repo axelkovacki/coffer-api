@@ -1,11 +1,13 @@
 require('dotenv').config();
-const database = require('./config/database');
-const server = require('./config/server');
+global.locator = require('./config/locator');
+
+const Server = global.locator('config/server/server');
+const DatabaseConnection = global.locator('config/database/connection');
 
 function start() {
   try {
-    database.start();
-    server.start();
+    Server.start();
+    DatabaseConnection.start();
   } catch (err) {
     console.log(err);
   }
