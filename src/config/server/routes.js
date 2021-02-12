@@ -6,11 +6,23 @@ const LogController = global.locator('modules/log/controllers/log');
 module.exports = function (fastify, opts, next) {
   fastify.post('/user/login', async (request, reply) => UserController.login(request, reply));
   fastify.post('/user/create', async (request, reply) => UserController.create(request, reply));
+  
+  fastify.post(
+    '/user/remove',
+    { preHandler: [AuthMiddleware] },
+    async (request, reply) => UserController.remove(request, reply)
+  );
 
   fastify.post(
     '/project/create',
     { preHandler: [AuthMiddleware] },
     async (request, reply) => ProjectController.create(request, reply)
+  );
+
+  fastify.delete(
+    '/project/remove',
+    { preHandler: [AuthMiddleware] },
+    async (request, reply) => ProjectController.remove(request, reply)
   );
 
   fastify.get(

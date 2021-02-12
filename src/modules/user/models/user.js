@@ -6,7 +6,8 @@ const UserSchema = new Schema({
   name: String,
   email: String,
   password: String,
-  apiKey: String
+  apiKey: String,
+  active: { type: Boolean, default: true }
 }, {
   timestamps: true
 });

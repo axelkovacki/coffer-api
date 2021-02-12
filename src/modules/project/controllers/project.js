@@ -29,7 +29,22 @@ async function create(request, reply) {
   return reply.send({ data: newProject });
 }
 
+async function remove(request, reply) {  
+  const { project_id } = request.headers;
+
+  const project = await ProjectModel.findOne({ _id: project_id });
+
+  if(!project) {
+    return reply.code(404).send({ message: 'Project not exists.' });
+  }
+
+  project.remove();
+  
+  return reply.send({ message: 'Project deleted.' });
+}
+
 module.exports = {
   list,
-  create
+  create,
+  remove
 }
