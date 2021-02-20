@@ -1,5 +1,6 @@
 import DataModel from '../models/DataModel';
 import ProjectModel from '../../project/models/ProjectModel';
+import Cryptography from '../../../config/cryptography/Cryptography';
 
 class DataController {
     async list(request: any, reply: any) {
@@ -10,7 +11,17 @@ class DataController {
                 return reply.code('400').send({ message: 'Invalid Param' });
             }
 
-            return reply.send({ data: await DataModel.find({ projectId: project_id }).sort('-createdAt') });
+            const cryptography = new Cryptography(project_id);
+            let data: any = await DataModel.find({ projectId: project_id }).sort('-createdAt');
+
+            if (data.length) {
+                data = data.map((i) => {
+                    i.payload = cryptography.decript(data.payload);
+                    return i;
+                });
+            }
+
+            return reply.send({ data });
         } catch (err) {
             console.log(err);
         }
@@ -25,9 +36,12 @@ class DataController {
                 return reply.code('400').send({ message: 'Invalid Param' });
             }
 
-            return reply.send({ data: await DataModel.findOne({
-                projectId: project_id, _id: token })
-            });
+            const cryptography = new Cryptography(project_id);
+            let data: any = await DataModel.findOne({ projectId: project_id, _id: token });
+
+            data.payload = cryptography.decript(data.payload);
+
+            return reply.send({ data });
         } catch (err) {
             console.log(err);
         }
@@ -49,9 +63,11 @@ class DataController {
                 return reply.code('404').send({ message: 'Project not found' });
             }
 
+            const cryptography = new Cryptography(project_id);
+
             const data = await DataModel.create({
                 projectId: project_id,
-                payload
+                payload: cryptography.encrypt(payload)
             });
 
             return reply.send({ message: 'Data Created', data: { token: data._id } });
