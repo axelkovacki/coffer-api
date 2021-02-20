@@ -16,6 +16,23 @@ class DataController {
         }
     }
 
+    async get(request: any, reply: any) {
+        try {
+            const { project_id } = request.headers;
+            const { token } = request.query;
+
+            if (!project_id || !token) {
+                return reply.code('400').send({ message: 'Invalid Param' });
+            }
+
+            return reply.send({ data: await DataModel.findOne({
+                projectId: project_id, _id: token })
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     async create(request: any, reply: any) {
         try {
             const { _id } = request.auth;
@@ -37,7 +54,7 @@ class DataController {
                 payload
             });
 
-            return reply.send({ message: 'Data Created', data });
+            return reply.send({ message: 'Data Created', data: { token: data._id } });
         } catch (err) {
             console.log(err);
             return reply.code('400').send({ message: 'Error has occurred', data: err.message });

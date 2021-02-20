@@ -33,15 +33,21 @@ class Routes {
         );
 
         fastify.post(
-            '/log/create',
+            '/data/create',
             { preHandler: [AuthMiddleware.handler] },
             async (request: any, reply: any) => DataController.create(request, reply)
         );
 
         fastify.get(
-            '/log/list',
+            '/data/list',
             { preHandler: [AuthMiddleware.handler] },
             async (request: any, reply: any) => DataController.list(request, reply)
+        );
+
+        fastify.get(
+            '/data/get',
+            { preHandler: [AuthMiddleware.handler] },
+            async (request: any, reply: any) => DataController.get(request, reply)
         );
 
         next();
