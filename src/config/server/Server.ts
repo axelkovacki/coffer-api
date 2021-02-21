@@ -12,7 +12,7 @@ export default class Server {
         try {
             this.connection.register(require('fastify-cors'));
             this.connection.register(Routes.handler);
-            await this.connection.listen(3001);
+            await this.connection.listen(process.env.PORT || 8080, '0.0.0.0');
             
             this.connection.log.info(`server listening on ${this.connection.server.address().port}`);
         } catch (err) {
