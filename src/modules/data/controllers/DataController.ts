@@ -15,8 +15,8 @@ class DataController {
             let data: any = await DataModel.find({ projectId: project_id }).sort('-createdAt');
 
             if (data.length) {
-                data = data.map((i) => {
-                    i.payload = cryptography.decript(data.payload);
+                data = data.map((i: any) => {
+                    i.payload = cryptography.decript(i.payload);
                     return i;
                 });
             }
@@ -24,26 +24,34 @@ class DataController {
             return reply.send({ data });
         } catch (err) {
             console.log(err);
+            return reply.code('500').send({ message: 'Error has occurred', data: err.message });
         }
     }
 
     async get(request: any, reply: any) {
         try {
             const { project_id } = request.headers;
-            const { token } = request.query;
+            const { tokens } = request.query;
 
-            if (!project_id || !token) {
+            if (!project_id || !tokens) {
                 return reply.code('400').send({ message: 'Invalid Param' });
             }
 
             const cryptography = new Cryptography(project_id);
-            let data: any = await DataModel.findOne({ projectId: project_id, _id: token });
+            const ids = JSON.parse(tokens);
+            let data: any = await DataModel.find({ projectId: project_id, _id: { $in: ids } });
 
-            data.payload = cryptography.decript(data.payload);
-
+            if (data.length) {
+                data = data.map((i: any) => {
+                    i.payload = cryptography.decript(i.payload);
+                    return i;
+                });
+            }
+            
             return reply.send({ data });
         } catch (err) {
             console.log(err);
+            return reply.code('500').send({ message: 'Error has occurred', data: err.message });
         }
     }
 
@@ -73,7 +81,7 @@ class DataController {
             return reply.send({ message: 'Data Created', data: { token: data._id } });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: 'Error has occurred', data: err.message });
+            return reply.code('500').send({ message: 'Error has occurred', data: err.message });
         }
     }
 }
