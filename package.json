@@ -15,7 +15,6 @@
         "dotenv": "^8.2.0",
         "fastify": "^3.8.0",
         "fastify-cors": "^4.1.0",
-        "json-crypto": "^1.0.5",
         "md5": "^2.3.0",
         "mongoose": "^5.10.14",
         "uninstall": "0.0.0"
