@@ -1,4 +1,5 @@
 import AuthMiddleware from '../../middlewares/auth/Auth';
+import ProjectAuthMiddleware from '../../middlewares/auth/ProjectAuth';
 import UserController from '../../modules/user/controllers/UserController';
 import ProjectController from '../../modules/project/controllers/ProjectController';
 import DataController from '../../modules/data/controllers/DataController';
@@ -22,7 +23,7 @@ class Routes {
 
         fastify.delete(
             '/project/remove',
-            { preHandler: [AuthMiddleware.handler] },
+            { preHandler: [AuthMiddleware.handler, ProjectAuthMiddleware.handler] },
             async (request: any, reply: any) => ProjectController.remove(request, reply)
         );
 
@@ -34,19 +35,19 @@ class Routes {
 
         fastify.post(
             '/data/create',
-            { preHandler: [AuthMiddleware.handler] },
+            { preHandler: [AuthMiddleware.handler, ProjectAuthMiddleware.handler] },
             async (request: any, reply: any) => DataController.create(request, reply)
         );
 
         fastify.get(
             '/data/list',
-            { preHandler: [AuthMiddleware.handler] },
+            { preHandler: [AuthMiddleware.handler, ProjectAuthMiddleware.handler] },
             async (request: any, reply: any) => DataController.list(request, reply)
         );
 
         fastify.get(
             '/data/get',
-            { preHandler: [AuthMiddleware.handler] },
+            { preHandler: [AuthMiddleware.handler, ProjectAuthMiddleware.handler] },
             async (request: any, reply: any) => DataController.get(request, reply)
         );
 
