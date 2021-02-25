@@ -6,7 +6,7 @@ class DataController {
             const { project_id } = request.headers;
             const data = await DataService.list(project_id);
 
-            return reply.send({ data });
+            return reply.send({ count: data.length, data });
         } catch (err) {
             console.log(err);
             return reply.code('500').send({ message: err.message });

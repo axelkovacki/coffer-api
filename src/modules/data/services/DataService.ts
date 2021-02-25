@@ -9,10 +9,9 @@ class DataService {
         }
 
         const cryptography = new Cryptography(projectId);
-        data = data.map((i: any) => {
-            i.payload = cryptography.decript(i.payload);
-            return i;
-        });
+        for (let index = 0; index < data.length; index++) {
+            data[index] = cryptography.decript(data[index].payload);
+        }
 
         return data;
     }
@@ -28,10 +27,9 @@ class DataService {
         }
 
         const cryptography = new Cryptography(projectId);
-        data = data.map((i: any) => {
-            i.payload = cryptography.decript(i.payload);
-            return i;
-        });
+        for (let index = 0; index < data.length; index++) {
+            data[index] = cryptography.decript(data[index].payload);
+        }
     
         return data;
     }
