@@ -8,10 +8,10 @@ class DataService {
             return [];
         }
 
-        const cryptography = new Cryptography(projectId);
-        for (let index = 0; index < data.length; index++) {
-            data[index] = cryptography.decript(data[index].payload);
-        }
+        // const cryptography = new Cryptography(projectId);
+        // for (let index = 0; index < data.length; index++) {
+        //     data[index] = cryptography.decript(data[index].payload);
+        // }
 
         return data;
     }

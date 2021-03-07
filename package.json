@@ -4,12 +4,14 @@
     "description": "## Delivers and monitors logs",
     "main": "index.js",
     "scripts": {
-        "start": "npx ts-node-dev --respawn --transpile-only src/index.ts",
+        "start": "npm i && npx ts-node-dev --respawn --transpile-only src/index.ts",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Áxel Kovacki",
     "license": "ISC",
     "dependencies": {
+        "@grpc/grpc-js": "^1.2.10",
+        "@grpc/proto-loader": "^0.5.6",
         "axios": "^0.21.0",
         "crypto": "^1.0.1",
         "dotenv": "^8.2.0",
@@ -24,5 +26,6 @@
         "@types/node": "^14.14.28",
         "ts-node-dev": "^1.1.1",
         "typescript": "^4.1.5"
-    }
+    },
+    "type": "module"
 }

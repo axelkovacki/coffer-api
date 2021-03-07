@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+message CreateRequest {
+    string apiKey = 1;
+    string name = 2;
+}
+
+message CreateResponse {
+    string _id = 1;
+    string userId = 2;
+    string name = 3;
+}
+
+message RemoveRequest {
+    string apiKey = 1;
+    string projectId = 2;
+}
+
+message RemoveResponse {
+    string message = 1;
+}
+
+message ListRequest {
+    string apiKey = 1;
+}
+
+message ListResponse {
+    message object {
+        string _id = 1;
+        string userId = 2;
+        string name = 3;
+    }
+
+    repeated object data = 1;
+}
+
+service Project {
+    rpc Create(CreateRequest) returns (CreateResponse);
+    rpc Remove(RemoveRequest) returns (RemoveResponse);
+    rpc List(ListRequest) returns (ListResponse);
+}

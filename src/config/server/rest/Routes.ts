@@ -1,8 +1,8 @@
-import AuthMiddleware from '../../middlewares/auth/Auth';
-import ProjectAuthMiddleware from '../../middlewares/auth/ProjectAuth';
-import UserController from '../../modules/user/controllers/UserController';
-import ProjectController from '../../modules/project/controllers/ProjectController';
-import DataController from '../../modules/data/controllers/DataController';
+import AuthMiddleware from '../../../middlewares/auth/Auth';
+import ProjectAuthMiddleware from '../../../middlewares/auth/ProjectAuth';
+import UserController from '../../../modules/user/controllers/UserController';
+import ProjectController from '../../../modules/project/controllers/ProjectController';
+import DataController from '../../../modules/data/controllers/DataController';
 
 class Routes {
     handler(fastify: any, opts: any, next: any) {
