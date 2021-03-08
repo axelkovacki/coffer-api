@@ -1,43 +1,43 @@
 import UserService from '../services/UserService';
 
 class UserController {
-    async login(request: any, reply: any) {
+    async login(call: any, callback: any) {
         try {
-            const { email, password } = request.body;
+            const { email, password } = call.request;
             const user = await UserService.login(email, password);
 
-            return reply.send({ data: user });
+            return callback(null, { data: user });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: err.message });
+            return callback(err);
         }
     }
 
-    async create(request: any, reply: any) {
+    async create(call: any, callback: any) {
         try {
-            const { name, email, password } = request.body;
+            const { name, email, password } = call.request;
             const newUser = await UserService.create(
                 name,
                 email,
                 password
             );
 
-            return reply.send({ data: newUser });
+            return callback(null, { data: newUser });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: err.message });
+            return callback(err);
         }
     }
 
-    async remove(request: any, reply: any) {
+    async remove(call: any, callback: any) {
         try {
-            const { _id } = request.auth;
+            const { _id } = call.request;
             await UserService.remove(_id);
 
-            return reply.send({ message: 'Project deleted.' });
+            return callback(null, { message: 'Project deleted.' });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: err.message });
+            return callback(err);
         }
     }
 }

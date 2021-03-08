@@ -1,16 +1,12 @@
 import Dotenv from 'dotenv';
-import ServerRest from './config/server/rest/Server';
-import ServerGrpc from './config/server/grpc/Server';
+import Server from './config/server/Server';
 import Database from './config/database/Database';
 
 Dotenv.config();
 
 try {
-    const serverRestConnection = new ServerRest();
-    serverRestConnection.start();
-
-    const serverGrpcConnection = new ServerGrpc();
-    serverGrpcConnection.start();
+    const serverConnection = new Server();
+    serverConnection.start();
 
     const databaseConnection = new Database();
     databaseConnection.start();

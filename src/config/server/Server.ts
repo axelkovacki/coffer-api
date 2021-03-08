@@ -14,7 +14,7 @@ export default class Server {
         try {
             this.router.handle();
             this.connection.bindAsync(
-                '0.0.0.0:8081',
+                '0.0.0.0:8080',
                 ServerCredentials.createInsecure(),
                 () => this.connection.start()
             );

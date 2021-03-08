@@ -1,42 +1,42 @@
+import AuthService from '../../auth/services/AuthService';
 import ProjectService from '../services/ProjectService';
 
 class ProjectController {
-    async list(request: any, reply: any) {
+    async list(call: any, callback: any) {
         try {
-            const { _id } = request.auth;
+            const { apiKey } = call.request;
+            const { _id } = await AuthService.handle(apiKey);
             const projects = await ProjectService.list(_id);
     
-            return reply.send({ data: projects });
+            return callback(null, { data: projects });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: err.message });
+            return callback(err);
         }
     }
 
-    async create(request: any, reply: any) {
+    async create(call: any, callback: any) {
         try {
-            const { _id } = request.auth;
-            const { name } = request.body;
-    
+            const { apiKey, name } = call.request;
+            const { _id } = await AuthService.handle(apiKey);
             const newProject = await ProjectService.create(_id, name);
-    
-            return reply.send({ data: newProject });
+
+            return callback(null, { data: newProject });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: err.message });
+            return callback(err);
         }
     }
 
-    async remove(request: any, reply: any) {
+    async remove(call: any, callback: any) {
         try {
-            const { project_id } = request.headers;
+            const { projectId } = call.request;
+            await ProjectService.remove(projectId);
     
-            await ProjectService.remove(project_id);
-    
-            return reply.send({ message: 'Project deleted.' });
+            return callback(null, { message: 'Project deleted.' });
         } catch (err) {
             console.log(err);
-            return reply.code('400').send({ message: err.message });
+            return callback(err);
         }
     }
 }
