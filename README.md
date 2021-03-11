@@ -1,25 +1,14 @@
 # Prisma
 
-## Log your application with low cost 
+## Uma API segura para os dados de seus Clientes.
+**Use o Prisma para garantir a segurança de dados sensíveis de seus clientes evitando complicações com a LGPD.**
 
-## How to run project
+## Motivação
+A efetivação da LGPD (lei geral de proteção de dados) nos trouxe o dever de criar novas proteções em nossos sistemas para proteger os dados de nossos clientes. Porém isso tem um custo. Muitas empresas com recursos limitados terão que escolher entre desenvolver funcionalidades ou desenvolver multiplas formas de segurança para o sistema. É justamente para esse caso que o Prisma foi pensado.
 
-### `npm i`
-
-Install all dependencies.
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-If error:
- - "System limit for number of file watchers reached, watch"
-
-Run:
- - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
- - sudo sysctl -p
- 
+## Funcionalidades
+- Criptografa os dados e salva em uma base protegida contra ataques.
+- Cria log para cada modificação dos dados.
+- Cria replicações da base dados.
+- Implementa medidas de segurança em nosso servidor e na base de dados.
+- Fornece uma SDK simples para facilitar a integração dos sistemas.
