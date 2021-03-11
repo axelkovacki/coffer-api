@@ -9,11 +9,16 @@ class DataService {
         }
 
         const cryptography = new Cryptography(projectId);
+
+        let parsed = [];
         for (let index = 0; index < data.length; index++) {
-            data[index] = cryptography.decript(data[index].payload);
+            parsed.push({
+                token: data[index]._id,
+                payload: cryptography.decript(data[index].payload)
+            });
         }
 
-        return data;
+        return parsed;
     }
 
     async get(projectId: string, ids: string[]) {
@@ -27,14 +32,19 @@ class DataService {
         }
 
         const cryptography = new Cryptography(projectId);
+
+        let parsed = [];
         for (let index = 0; index < data.length; index++) {
-            data[index] = cryptography.decript(data[index].payload);
+            parsed.push({
+                token: data[index]._id,
+                payload: cryptography.decript(data[index].payload)
+            });
         }
     
-        return data;
+        return parsed;
     }
 
-    async create(projectId: string, payload: object) {
+    async create(projectId: string, payload: string) {
         if (!payload) {
             throw new Error('Payload not reported')
         }

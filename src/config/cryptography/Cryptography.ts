@@ -8,39 +8,39 @@ export default class Cryptography {
     }
 
     createKey(secret: string) {
-        return Crypto.createHash("sha256").update(secret).digest();
+        return Crypto.createHash('sha256').update(secret).digest();
     }
 
-    encrypt(payload: object) {
+    encrypt(payload: string) {
         const iv = Crypto
-            .createHash("sha256")
-            .update(Crypto.randomBytes(48).toString("hex"))
+            .createHash('sha256')
+            .update(Crypto.randomBytes(48).toString('hex'))
             .digest();
 
         const resizedIV = Buffer.allocUnsafe(16);
         iv.copy(resizedIV);
 
-        const cipher = Crypto.createCipheriv("aes256", this.key, resizedIV);
+        const cipher = Crypto.createCipheriv('aes256', this.key, resizedIV);
         
         const msg = [];
-        msg.push(cipher.update(JSON.stringify(payload), "binary", "hex"));
-        msg.push(cipher.final("hex"));
+        msg.push(cipher.update(payload, 'binary', 'hex'));
+        msg.push(cipher.final('hex'));
 
         return encodeURIComponent(
-            JSON.stringify([resizedIV.toString("hex"), msg.join("")])
+            JSON.stringify([resizedIV.toString('hex'), msg.join('')])
         );
     }
 
     decript(payload: string) {
         const [iv, ciphertext] = JSON.parse(decodeURIComponent(payload));
 
-        const bufferIV = Buffer.from(iv, "hex");
-        const decipher = Crypto.createDecipheriv("aes256", this.key, bufferIV);
+        const bufferIV = Buffer.from(iv, 'hex');
+        const decipher = Crypto.createDecipheriv('aes256', this.key, bufferIV);
 
         const msg = [];
-        msg.push(decipher.update(ciphertext, "hex", "binary"));
-        msg.push(decipher.final("binary"));
+        msg.push(decipher.update(ciphertext, 'hex', 'binary'));
+        msg.push(decipher.final('binary'));
         
-        return JSON.parse(msg.join(""));
+        return msg.join('');
     }
 }
