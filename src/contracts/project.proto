@@ -7,9 +7,8 @@ message CreateRequest {
 
 message CreateResponse {
     message object {
-        string _id = 1;
-        string userId = 2;
-        string name = 3;
+        string projectId = 1;
+        string name = 2;
     }
 
     object data = 1;
@@ -30,9 +29,8 @@ message ListRequest {
 
 message ListResponse {
     message object {
-        string _id = 1;
-        string userId = 2;
-        string name = 3;
+        string projectId = 1;
+        string name = 2;
     }
 
     repeated object data = 1;

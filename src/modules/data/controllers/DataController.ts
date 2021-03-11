@@ -5,11 +5,11 @@ class DataController {
     async list(call: any, callback: any) {
         try {
             const { apiKey, projectId } = call.request;
-            await AuthService.handle(apiKey);
+            const { _id: userId } = await AuthService.handle(apiKey);
 
-            const data = await DataService.list(projectId);
+            const data = await DataService.list(userId, projectId);
 
-            return callback(null, { count: data.length, data });
+            return callback(null, { data });
         } catch (err) {
             return callback(err);
         }
@@ -18,10 +18,10 @@ class DataController {
     async get(call: any, callback: any) {
         try {
             const { apiKey, projectId, tokens } = call.request;
-            await AuthService.handle(apiKey);
+            const { _id: userId } = await AuthService.handle(apiKey);
 
-            const data = await DataService.get(projectId, tokens);
-    
+            const data = await DataService.get(userId, projectId, tokens);
+
             return callback(null, { data });
         } catch (err) {
             return callback(err);
@@ -31,10 +31,10 @@ class DataController {
     async create(call: any, callback: any) {
         try {
             const { apiKey, projectId, payload } = call.request;
-            await AuthService.handle(apiKey);
+            const { _id: userId } = await AuthService.handle(apiKey);
 
-            const data = await DataService.create(projectId, payload);
-    
+            const data = await DataService.create(userId, projectId, payload);
+
             return callback(null, { message: 'Data Created', data });
         } catch (err) {
             return callback(err);

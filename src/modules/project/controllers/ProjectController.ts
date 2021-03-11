@@ -7,7 +7,7 @@ class ProjectController {
             const { apiKey } = call.request;
             const { _id } = await AuthService.handle(apiKey);
             const projects = await ProjectService.list(_id);
-    
+
             return callback(null, { data: projects });
         } catch (err) {
             console.log(err);
@@ -32,7 +32,7 @@ class ProjectController {
         try {
             const { projectId } = call.request;
             await ProjectService.remove(projectId);
-    
+
             return callback(null, { message: 'Project deleted.' });
         } catch (err) {
             console.log(err);

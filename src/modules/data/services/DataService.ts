@@ -2,8 +2,8 @@ import DataModel from '../models/DataModel';
 import Cryptography from '../../../config/cryptography/Cryptography';
 
 class DataService {
-    async list(projectId: string) {
-        let data: any = await DataModel.find({ projectId }).sort('-createdAt');
+    async list(userId: string, projectId: string) {
+        let data: any = await DataModel.find({ userId, projectId }).sort('-createdAt');
         if (!data.length) {
             return [];
         }
@@ -21,12 +21,12 @@ class DataService {
         return parsed;
     }
 
-    async get(projectId: string, ids: string[]) {
+    async get(userId: string, projectId: string, ids: string[]) {
         if (!ids || !ids.length) {
             throw new Error('Ids not reported');
         }
 
-        let data: any = await DataModel.find({ projectId, _id: { $in: ids } });
+        let data: any = await DataModel.find({ userId, projectId, _id: { $in: ids } });
         if (!data.length) {
             return [];
         }
@@ -40,18 +40,19 @@ class DataService {
                 payload: cryptography.decript(data[index].payload)
             });
         }
-    
+
         return parsed;
     }
 
-    async create(projectId: string, payload: string) {
+    async create(userId: string, projectId: string, payload: string) {
         if (!payload) {
             throw new Error('Payload not reported')
         }
 
         const cryptography = new Cryptography(projectId);
         const data = await DataModel.create({
-            projectId: projectId,
+            userId,
+            projectId,
             payload: cryptography.encrypt(payload)
         });
 

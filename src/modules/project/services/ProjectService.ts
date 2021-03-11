@@ -2,13 +2,21 @@ import ProjectModel from '../models/ProjectModel';
 
 class ProjectService {
     async list(userId: string) {
-        const projects = await ProjectModel.find({ userId });
+        const projects: any = await ProjectModel.find({ userId });
 
         if (!projects) {
             return [];
         }
 
-        return projects;
+        let parsed = [];
+        for (let index = 0; index < projects.length; index++) {
+            parsed.push({
+                projectId: projects[index]._id,
+                name: projects[index].name
+            });
+        }
+
+        return parsed;
     }
 
     async create(userId: string, name: string) {
@@ -18,12 +26,12 @@ class ProjectService {
             throw new Error('Project with this name already exists');
         }
 
-        const newProject = await ProjectModel.create({
+        const project: any = await ProjectModel.create({
             userId: userId,
             name
         });
 
-        return newProject;
+        return { projectId: project._id, name: project.name };
     }
 
     async remove(projectId: string) {
