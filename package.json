@@ -1,5 +1,5 @@
 {
-    "name": "prisma",
+    "name": "coffer",
     "version": "1.0.0",
     "description": "## Save your customers' data securely",
     "main": "index.js",
