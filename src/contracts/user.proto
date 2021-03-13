@@ -20,7 +20,7 @@ message LoginCreateResponse {
         string apiKey = 5;
         bool active = 6;
     }
-    
+
     object data = 1;
 }
 
