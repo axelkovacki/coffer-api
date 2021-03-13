@@ -3,7 +3,8 @@ syntax = "proto3";
 message GetRequest {
     string apiKey = 1;
     string projectId = 2;
-    repeated string tokens = 3;
+    repeated string schema = 3;
+    repeated string tokens = 4;
 }
 
 message GetResponse {
@@ -18,6 +19,7 @@ message GetResponse {
 message ListRequest {
     string apiKey = 1;
     string projectId = 2;
+    repeated string schema = 3;
 }
 
 message ListResponse {
@@ -32,7 +34,8 @@ message ListResponse {
 message CreateRequest {
     string apiKey = 1;
     string projectId = 2;
-    string payload = 3;
+    repeated string schema = 3;
+    repeated string payload = 4;
 }
 
 message CreateResponse {
@@ -41,7 +44,7 @@ message CreateResponse {
     }
 
     string message = 2;
-    object data = 3;
+    repeated object data = 3;
 }
 
 service Data {

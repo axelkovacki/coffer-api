@@ -16,7 +16,7 @@ export default class Database {
                 MONGO_PORT,
                 MONGO_DB
             } = process.env;
-    
+
             const options = {
                 useNewUrlParser: true,
                 reconnectTries: Number.MAX_VALUE,

@@ -5,8 +5,13 @@ class ProjectController {
     async list(call: any, callback: any) {
         try {
             const { apiKey } = call.request;
-            const { _id } = await AuthService.handle(apiKey);
-            const projects = await ProjectService.list(_id);
+
+            if (!apiKey) {
+                throw new Error('Api Key id not reported');
+            }
+
+            const { _id: userId } = await AuthService.handle(apiKey);
+            const projects = await ProjectService.list(userId);
 
             return callback(null, { data: projects });
         } catch (err) {
@@ -18,8 +23,13 @@ class ProjectController {
     async create(call: any, callback: any) {
         try {
             const { apiKey, name } = call.request;
-            const { _id } = await AuthService.handle(apiKey);
-            const newProject = await ProjectService.create(_id, name);
+
+            if (!apiKey) {
+                throw new Error('Api Key id not reported');
+            }
+
+            const { _id: userId } = await AuthService.handle(apiKey);
+            const newProject = await ProjectService.create(userId, name);
 
             return callback(null, { data: newProject });
         } catch (err) {
@@ -30,8 +40,18 @@ class ProjectController {
 
     async remove(call: any, callback: any) {
         try {
-            const { projectId } = call.request;
-            await ProjectService.remove(projectId);
+            const { apiKey, projectId } = call.request;
+
+            if (!apiKey) {
+                throw new Error('Api Key id not reported');
+            }
+
+            if (!projectId) {
+                throw new Error('Project id not reported');
+            }
+
+            const { _id: userId } = await AuthService.handle(apiKey);
+            await ProjectService.remove(userId, projectId);
 
             return callback(null, { message: 'Project deleted.' });
         } catch (err) {

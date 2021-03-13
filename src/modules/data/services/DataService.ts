@@ -1,62 +1,55 @@
+import DataSchemaService from './DataSchemaService';
 import DataModel from '../models/DataModel';
-import Cryptography from '../../../config/cryptography/Cryptography';
 
 class DataService {
-    async list(userId: string, projectId: string) {
-        let data: any = await DataModel.find({ userId, projectId }).sort('-createdAt');
-        if (!data.length) {
+    async list(userId: string, projectId: string, schema: string[]) {
+        let result: any = await DataModel.find({ userId, projectId }).sort('-createdAt');
+        if (!result.length) {
             return [];
         }
 
-        const cryptography = new Cryptography(projectId);
-
-        let parsed = [];
-        for (let index = 0; index < data.length; index++) {
-            parsed.push({
-                token: data[index]._id,
-                payload: cryptography.decript(data[index].payload)
-            });
-        }
-
-        return parsed;
-    }
-
-    async get(userId: string, projectId: string, ids: string[]) {
-        if (!ids || !ids.length) {
-            throw new Error('Ids not reported');
-        }
-
-        let data: any = await DataModel.find({ userId, projectId, _id: { $in: ids } });
-        if (!data.length) {
-            return [];
-        }
-
-        const cryptography = new Cryptography(projectId);
-
-        let parsed = [];
-        for (let index = 0; index < data.length; index++) {
-            parsed.push({
-                token: data[index]._id,
-                payload: cryptography.decript(data[index].payload)
-            });
-        }
-
-        return parsed;
-    }
-
-    async create(userId: string, projectId: string, payload: string) {
-        if (!payload) {
-            throw new Error('Payload not reported')
-        }
-
-        const cryptography = new Cryptography(projectId);
-        const data = await DataModel.create({
+        const schemaService = new DataSchemaService(
             userId,
             projectId,
-            payload: cryptography.encrypt(payload)
-        });
+            schema,
+            result
+        );
 
-        return { token: data._id };
+        const data = schemaService.digest();
+
+        return data;
+    }
+
+    async get(userId: string, projectId: string, schema: string[], ids: string[]) {
+        let result: any = await DataModel.find({ userId, projectId, _id: { $in: ids } });
+        if (!result.length) {
+            return [];
+        }
+
+        const schemaService = new DataSchemaService(
+            userId,
+            projectId,
+            schema,
+            result
+        );
+
+        const data = schemaService.digest();
+
+        return data;
+    }
+
+    async create(userId: string, projectId: string, schema: string[], payload: object[]) {
+        const schemaService = new DataSchemaService(
+            userId,
+            projectId,
+            schema,
+            payload
+        );
+
+        const data = schemaService.digest();
+        const { _id } = await DataModel.create(data);
+
+        return { token: _id };
     }
 }
 

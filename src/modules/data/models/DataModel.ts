@@ -4,9 +4,9 @@ const { Schema, model } = DatabaseManager;
 
 const DataSchema = new Schema({
     userId: String,
-    projectId: String,
-    payload: Array
+    projectId: String
 }, {
+    strict: false,
     timestamps: true
 });
 

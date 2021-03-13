@@ -1,22 +1,20 @@
 import ProjectModel from '../models/ProjectModel';
+import DataModel from '../../data/models/DataModel';
 
 class ProjectService {
     async list(userId: string) {
-        const projects: any = await ProjectModel.find({ userId });
+        const result: any = await ProjectModel.find({ userId });
 
-        if (!projects) {
+        if (!result) {
             return [];
         }
 
-        let parsed = [];
-        for (let index = 0; index < projects.length; index++) {
-            parsed.push({
-                projectId: projects[index]._id,
-                name: projects[index].name
-            });
-        }
+        const projects = result.map((r: any) => ({
+            projectId: r._id,
+            name: r.name
+        }));
 
-        return parsed;
+        return projects;
     }
 
     async create(userId: string, name: string) {
@@ -34,13 +32,14 @@ class ProjectService {
         return { projectId: project._id, name: project.name };
     }
 
-    async remove(projectId: string) {
-        const project = await ProjectModel.findOne({ _id: projectId });
+    async remove(userId: string, projectId: string) {
+        const project = await ProjectModel.findOne({ userId, _id: projectId });
 
         if (!project) {
             throw new Error('Project not exists');
         }
 
+        await DataModel.deleteMany({ projectId });
         return project.remove();
     }
 }

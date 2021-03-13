@@ -1,9 +1,10 @@
-import md5 from 'md5';
+import MD5 from '../../../config/cryptography/MD5';
 import UserModel from '../models/UserModel';
 
 class UserService {
     async login(email: any, password: any) {
-        const user = await UserModel.findOne({ email, password: md5(password) });
+        const md5 = new MD5();
+        const user = await UserModel.findOne({ email, password: md5.encrypt(password) });
 
         if (!user) {
             throw new Error('No user found');
@@ -19,12 +20,12 @@ class UserService {
             throw new Error('User already exists');
         }
 
-        const apiKey = md5(`${name}-${email}-${password}`);
+        const md5 = new MD5();
         const newUser = await UserModel.create({
             name,
             email,
-            password: md5(password),
-            apiKey
+            password: md5.encrypt(password),
+            apiKey: md5.encrypt(`${name}-${email}-${password}`)
         });
 
         return newUser;

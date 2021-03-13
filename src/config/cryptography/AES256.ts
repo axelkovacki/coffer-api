@@ -1,6 +1,6 @@
 import Crypto from 'crypto';
 
-export default class Cryptography {
+export default class AES256 {
     key: Buffer;
 
     constructor(secret: string) {
@@ -21,7 +21,7 @@ export default class Cryptography {
         iv.copy(resizedIV);
 
         const cipher = Crypto.createCipheriv('aes256', this.key, resizedIV);
-        
+
         const msg = [];
         msg.push(cipher.update(payload, 'binary', 'hex'));
         msg.push(cipher.final('hex'));
@@ -40,7 +40,7 @@ export default class Cryptography {
         const msg = [];
         msg.push(decipher.update(ciphertext, 'hex', 'binary'));
         msg.push(decipher.final('binary'));
-        
+
         return msg.join('');
     }
 }
