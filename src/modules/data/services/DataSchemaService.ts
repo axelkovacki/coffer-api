@@ -18,45 +18,55 @@ export default class DataSchemaService {
         this.aes256 = new AES256(projectId);
     }
 
-    async digest() {
-        let data: any = {
-            userId: this.userId,
-            projectId: this.projectId
-        };
+    digest() {
+        let data: any = [];
 
         for (let p = 0; p < this.payload.length; p++) {
-            for (let s = 0; s < this.schema.length; s++) {
-                const currentPayload = this.payload[p];
+            const currentPayload = this.payload[p];
 
-                if (!currentPayload[this.schema[s]]) {
+            data.push({
+                userId: this.userId,
+                projectId: this.projectId
+            });
+
+            for (let s = 0; s < this.schema.length; s++) {
+                const currentSchema = this.schema[s];
+
+                if (!currentPayload[currentSchema]) {
                     continue;
                 }
 
-                const hash = this.md5.encrypt(this.schema[s]);
-                data[hash] = this.aes256.encrypt(currentPayload[this.schema[s]]);
+                const hash = this.md5.encrypt(currentSchema);
+                data[p][hash] = this.aes256.encrypt(currentPayload[currentSchema]);
             }
         }
 
         return data;
     }
 
-    async undigest() {
+    undigest() {
         let data = [];
 
         for (let p = 0; p < this.payload.length; p++) {
+            const currentPayload = this.payload[p].toObject();
+
+            let object: any = {
+                _id: currentPayload._id,
+                createdAt: currentPayload.createdAt
+            };
+
             for (let s = 0; s < this.schema.length; s++) {
-                const currentPayload = this.payload[p];
-                const hash = this.md5.encrypt(this.schema[s]);
+                const currentSchema = this.schema[s];
+                const hash = this.md5.encrypt(currentSchema);
 
                 if (!currentPayload[hash]) {
                     continue;
                 }
 
-                let object: any = { token: currentPayload['_id'] };
-                object[this.schema[s]] = currentPayload[hash];
-
-                data.push(object);
+                object[currentSchema] = this.aes256.decript(currentPayload[hash]);
             }
+
+            data.push(object);
         }
 
         return data;

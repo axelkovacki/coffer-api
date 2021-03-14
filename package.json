@@ -1,7 +1,7 @@
 {
     "name": "coffer",
     "version": "1.0.0",
-    "description": "## Save your customers' data securely",
+    "description": "## Save your customer's data securely",
     "main": "index.js",
     "scripts": {
         "start": "npx ts-node-dev --respawn --transpile-only src/index.ts",
@@ -14,7 +14,6 @@
         "@grpc/proto-loader": "^0.5.6",
         "crypto": "^1.0.1",
         "dotenv": "^8.2.0",
-        "md5": "^2.3.0",
         "mongoose": "^5.10.14"
     },
     "devDependencies": {

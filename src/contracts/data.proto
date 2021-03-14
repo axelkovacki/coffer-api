@@ -4,16 +4,11 @@ message GetRequest {
     string apiKey = 1;
     string projectId = 2;
     repeated string schema = 3;
-    repeated string tokens = 4;
+    repeated string _ids = 4;
 }
 
 message GetResponse {
-    message object {
-        string token = 1;
-        string payload = 2;
-    }
-
-    repeated object data = 1;
+    repeated string data = 1;
 }
 
 message ListRequest {
@@ -24,7 +19,7 @@ message ListRequest {
 
 message ListResponse {
     message object {
-        string token = 1;
+        string _id = 1;
         string payload = 2;
     }
 
@@ -40,7 +35,7 @@ message CreateRequest {
 
 message CreateResponse {
     message object {
-        string token = 1;
+        string _id = 1;
     }
 
     string message = 2;

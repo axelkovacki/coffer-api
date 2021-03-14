@@ -15,13 +15,13 @@ class DataService {
             result
         );
 
-        const data = schemaService.digest();
+        const data = schemaService.undigest();
 
         return data;
     }
 
-    async get(userId: string, projectId: string, schema: string[], ids: string[]) {
-        let result: any = await DataModel.find({ userId, projectId, _id: { $in: ids } });
+    async get(userId: string, projectId: string, schema: string[], _ids: string[]) {
+        let result: any = await DataModel.find({ userId, projectId, _id: { $in: _ids } });
         if (!result.length) {
             return [];
         }
@@ -33,7 +33,7 @@ class DataService {
             result
         );
 
-        const data = schemaService.digest();
+        const data = schemaService.undigest();
 
         return data;
     }
@@ -47,9 +47,9 @@ class DataService {
         );
 
         const data = schemaService.digest();
-        const { _id } = await DataModel.create(data);
+        const result = await DataModel.insertMany(data);
 
-        return { token: _id };
+        return result;
     }
 }
 
